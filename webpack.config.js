@@ -43,7 +43,12 @@ module.exports = {
           "style-loader",
           "css-loader",
           "azure-devops-ui/buildScripts/css-variables-loader",
-          "sass-loader"
+          {
+            loader: "sass-loader",
+            options: {
+              implementation: require("sass")
+            }
+          }
         ]
       },
       {
