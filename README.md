@@ -24,5 +24,20 @@ When clicking the actions, `easy-branch-creator` will create a new branch, using
 
 ![Settings][settings]
 
+## Extension permissions
+
+When you install the extension from the Visual Studio Marketplace, Azure DevOps lists **permission scopes** and may show a warning about “high privilege scopes.” That text is standard for extensions that declare OAuth scopes of this level. It does not mean the extension performs hidden operations; it reflects what the declared APIs are allowed to do if the extension code calls them.
+
+The extension manifest declares two scopes (see `vss-extension.json`):
+
+| Scope             | Shown in Marketplace (typical)           | Why it is required |
+|-------------------|------------------------------------------|----------------------|
+| `vso.work_write`  | Work items (read and write)              | Read work item fields for branch/PR name templates; add relations linking branches and pull requests to work items; optionally update work item state when configured. |
+| `vso.code_manage` | Code (read, write, and manage)           | List repositories and branches, read refs, create new branches (Git ref updates), create pull requests, and optionally read `.azuredevops/pull_request_template.md` from the repo. |
+
+Azure Repos extensions that **create branches or pull requests via the REST API** generally need `vso.code_manage`. Finer-grained manifest scopes do not usually allow “only create a branch/PR” without the broader code scope; the Marketplace label “read, write, and manage” is how that scope is summarized for administrators.
+
+**Trust:** Only install this extension if your organization trusts the publisher and the code in this repository—the granted tokens could perform any operation those scopes allow, so the install screen reminds you to verify the source.
+
 [create-branch-action]: marketplace/create-branch-action.png
 [settings]: marketplace/settings.png
